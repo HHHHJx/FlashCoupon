@@ -29,9 +29,8 @@
 
         <!-- 基础架构组件包相关依赖 -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>com.jx</groupId>
             <artifactId>framework</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <!-- 项目工具包相关依赖 -->

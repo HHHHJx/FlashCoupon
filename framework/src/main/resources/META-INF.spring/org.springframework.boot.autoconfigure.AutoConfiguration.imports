@@ -1,3 +1,3 @@
-com.jx.framework.config.WebAutoConfiguration
-com.jx.framework.config.IdempotentConfiguration
-com.jx.framework.config.CacheConfiguration
+com.jx.flashcoupon.framework.config.framework.WebAutoConfiguration
+com.jx.flashcoupon.framework.config.framework.IdempotentConfiguration
+com.jx.flashcoupon.framework.config.framework.CacheConfiguration
