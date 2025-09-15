@@ -15,10 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 设置文档 API Swagger 配置信息，为了让 <a href="http://127.0.0.1:{server.port}{server.servlet.context-path}/doc.html" /> 中的信息看着更饱满
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-14
+ * 开发时间：2025-07-14
  */
 @Slf4j
 @Configuration
@@ -40,10 +37,7 @@ public class SwaggerConfiguration implements ApplicationRunner {
                         .title("牛券-搜索系统") // 标题
                         .description("负责优惠券搜索等功能等") // 描述 Api 接口文档的基本信息
                         .version("v1.0.0") // 版本
-                        // 设置 OpenAPI 文档的联系信息，包括联系人姓名为"ding.ma"，邮箱为"machen@apache.org"
-                        .contact(new Contact().name("ding.ma").email("machen@apache.org"))
-                        // 设置 OpenAPI 文档的许可证信息，包括许可证名称和许可证URL
-                        .license(new License().name("山东流年网络科技有限公司").url("https://gitcode.net/nageoffer/onecoupon/-/blob/main/LICENSE"))
+                    
                 );
     }
 

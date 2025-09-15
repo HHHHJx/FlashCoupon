@@ -2,8 +2,8 @@
 
 package com.jx.flashcoupon.engine.service.handler.remind.impl;
 
-import com.nageoffer.onecoupon.engine.service.handler.remind.RemindCouponTemplate;
-import com.nageoffer.onecoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
+import com.jx.flashcoupon.engine.service.handler.remind.RemindCouponTemplate;
+import com.jx.flashcoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * 作者：优雅
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-18
+ * 开发时间：2025-07-18
  */
 @Component
 public class SendEmailRemindCouponTemplate implements RemindCouponTemplate {

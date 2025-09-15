@@ -14,10 +14,7 @@ import java.util.Date;
 
 /**
  * 数据库持久层配置类｜配置 MyBatis-Plus 相关分页插件等
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-17
+ * 开发时间：2025-07-17
  */
 @Configuration
 public class DataBaseConfiguration {
@@ -45,7 +42,7 @@ public class DataBaseConfiguration {
      * <p>
      * 作者：马丁
      * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
-     * 开发时间：2024-07-08
+    
      */
     static class MyMetaObjectHandler implements MetaObjectHandler {
 

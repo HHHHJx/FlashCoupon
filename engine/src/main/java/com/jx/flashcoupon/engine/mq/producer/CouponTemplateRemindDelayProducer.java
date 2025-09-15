@@ -3,10 +3,10 @@
 package com.jx.flashcoupon.engine.mq.producer;
 
 import cn.hutool.core.util.StrUtil;
-import com.nageoffer.onecoupon.engine.common.constant.EngineRockerMQConstant;
-import com.nageoffer.onecoupon.engine.mq.base.BaseSendExtendDTO;
-import com.nageoffer.onecoupon.engine.mq.base.MessageWrapper;
-import com.nageoffer.onecoupon.engine.mq.event.CouponTemplateRemindDelayEvent;
+import com.jx.flashcoupon.engine.common.constant.EngineRockerMQConstant;
+import com.jx.flashcoupon.engine.mq.base.BaseSendExtendDTO;
+import com.jx.flashcoupon.engine.mq.base.MessageWrapper;
+import com.jx.flashcoupon.engine.mq.event.CouponTemplateRemindDelayEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageConst;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -23,7 +23,7 @@ import java.util.UUID;
  * <p>
  * 作者：优雅
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-21
+ * 开发时间：2025-07-21
  */
 @Slf4j
 @Component

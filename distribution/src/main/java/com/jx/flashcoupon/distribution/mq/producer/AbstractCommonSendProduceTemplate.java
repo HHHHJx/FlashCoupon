@@ -4,7 +4,7 @@ package com.jx.flashcoupon.distribution.mq.producer;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
-import com.nageoffer.onecoupon.distribution.mq.base.BaseSendExtendDTO;
+import com.jx.flashcoupon.distribution.mq.base.BaseSendExtendDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;

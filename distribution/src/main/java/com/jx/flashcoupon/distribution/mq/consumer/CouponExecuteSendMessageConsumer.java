@@ -4,12 +4,12 @@ package com.jx.flashcoupon.distribution.mq.consumer;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
-import com.nageoffer.onecoupon.distribution.common.constant.DistributionRocketMQConstant;
-import com.nageoffer.onecoupon.distribution.common.enums.SendMessageMarkCovertEnum;
-import com.nageoffer.onecoupon.distribution.mq.base.MessageWrapper;
-import com.nageoffer.onecoupon.distribution.mq.event.CouponTemplateDistributionEvent;
-import com.nageoffer.onecoupon.distribution.service.basics.DistributionExecuteStrategy;
-import com.nageoffer.onecoupon.distribution.service.basics.DistributionStrategyChoose;
+import com.jx.flashcoupon.distribution.common.constant.DistributionRocketMQConstant;
+import com.jx.flashcoupon.distribution.common.enums.SendMessageMarkCovertEnum;
+import com.jx.flashcoupon.distribution.mq.base.MessageWrapper;
+import com.jx.flashcoupon.distribution.mq.event.CouponTemplateDistributionEvent;
+import com.jx.flashcoupon.distribution.service.basics.DistributionExecuteStrategy;
+import com.jx.flashcoupon.distribution.service.basics.DistributionStrategyChoose;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -20,10 +20,8 @@ import java.util.List;
 
 /**
  * 优惠券执行分发到用户消费者 TODO 删除该消息队列
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-14
+
+ * 开发时间：2025-07-14
  */
 @Component
 @RequiredArgsConstructor

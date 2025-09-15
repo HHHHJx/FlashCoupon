@@ -50,7 +50,7 @@ spring:
       password: nacos
       username: nacos
 
-one-coupon:
+flash-coupon:
   distribution:
     feign:
       remote-url:

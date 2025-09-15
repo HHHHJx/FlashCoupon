@@ -6,12 +6,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.nageoffer.onecoupon.framework.errorcode.BaseErrorCode;
-import com.nageoffer.onecoupon.framework.exception.ClientException;
-import com.nageoffer.onecoupon.search.dao.entity.CouponTemplateDoc;
-import com.nageoffer.onecoupon.search.dto.req.CouponTemplatePageQueryReqDTO;
-import com.nageoffer.onecoupon.search.dto.resp.CouponTemplatePageQueryRespDTO;
-import com.nageoffer.onecoupon.search.service.CouponTemplateSearchService;
+import com.jx.flashcoupon.framework.errorcode.BaseErrorCode;
+import com.jx.flashcoupon.framework.exception.ClientException;
+import com.jx.flashcoupon.search.dao.entity.CouponTemplateDoc;
+import com.jx.flashcoupon.search.dto.req.CouponTemplatePageQueryReqDTO;
+import com.jx.flashcoupon.search.dto.resp.CouponTemplatePageQueryRespDTO;
+import com.jx.flashcoupon.search.service.CouponTemplateSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +27,8 @@ import java.util.Objects;
 
 /**
  * 优惠券模板搜索业务逻辑实现层
- * <p>
- * 作者：蛋仔
- * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-08-02
+
+ * 开发时间：2025-08-02
  */
 @Slf4j
 @Service

@@ -2,17 +2,14 @@
 
 package com.jx.flashcoupon.engine.service;
 
-import com.nageoffer.onecoupon.engine.dto.req.CouponCreatePaymentReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponProcessPaymentReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponProcessRefundReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRedeemReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponCreatePaymentReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponProcessPaymentReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponProcessRefundReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRedeemReqDTO;
 
 /**
  * 用户优惠券业务逻辑层
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-25
+ * 开发时间：2025-07-25
  */
 public interface UserCouponService {
 

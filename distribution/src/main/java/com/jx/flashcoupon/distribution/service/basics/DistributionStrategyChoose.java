@@ -2,7 +2,7 @@
 
 package com.jx.flashcoupon.distribution.service.basics;
 
-import com.nageoffer.onecoupon.framework.exception.ServiceException;
+import com.jx.flashcoupon.framework.exception.ServiceException;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
@@ -15,10 +15,7 @@ import java.util.Optional;
 
 /**
  * 分发服务策略模式选择器
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-16
+
  */
 @Component
 public class DistributionStrategyChoose implements ApplicationContextAware, CommandLineRunner {

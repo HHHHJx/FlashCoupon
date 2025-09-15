@@ -8,15 +8,15 @@ import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.nageoffer.onecoupon.engine.common.constant.EngineRedisConstant;
-import com.nageoffer.onecoupon.engine.common.enums.CouponTemplateStatusEnum;
-import com.nageoffer.onecoupon.engine.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.engine.dao.mapper.CouponTemplateMapper;
-import com.nageoffer.onecoupon.engine.dao.sharding.DBShardingUtil;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateQueryReqDTO;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
-import com.nageoffer.onecoupon.engine.service.CouponTemplateService;
-import com.nageoffer.onecoupon.framework.exception.ClientException;
+import com.jx.flashcoupon.engine.common.constant.EngineRedisConstant;
+import com.jx.flashcoupon.engine.common.enums.CouponTemplateStatusEnum;
+import com.jx.flashcoupon.engine.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.engine.dao.mapper.CouponTemplateMapper;
+import com.jx.flashcoupon.engine.dao.sharding.DBShardingUtil;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateQueryReqDTO;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
+import com.jx.flashcoupon.engine.service.CouponTemplateService;
+import com.jx.flashcoupon.framework.exception.ClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBloomFilter;
@@ -32,10 +32,7 @@ import java.util.stream.Collectors;
 
 /**
  * 优惠券模板业务逻辑实现层
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-08
+
  */
 @Slf4j
 @Service

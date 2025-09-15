@@ -3,9 +3,9 @@
 package com.jx.flashcoupon.engine.toolkit;
 
 import cn.hutool.core.date.DateUtil;
-import com.nageoffer.onecoupon.engine.common.enums.CouponRemindTypeEnum;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateRemindQueryRespDTO;
-import com.nageoffer.onecoupon.framework.exception.ClientException;
+import com.jx.flashcoupon.engine.common.enums.CouponRemindTypeEnum;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateRemindQueryRespDTO;
+import com.jx.flashcoupon.framework.exception.ClientException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +16,7 @@ import java.util.List;
  * <p>
  * 作者：优雅
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-20
+ * 开发时间：2025-07-20
  */
 public class CouponTemplateRemindUtil {
 

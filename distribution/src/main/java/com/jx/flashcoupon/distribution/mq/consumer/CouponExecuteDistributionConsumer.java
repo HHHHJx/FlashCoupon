@@ -18,23 +18,23 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nageoffer.onecoupon.distribution.common.constant.DistributionRedisConstant;
-import com.nageoffer.onecoupon.distribution.common.constant.DistributionRocketMQConstant;
-import com.nageoffer.onecoupon.distribution.common.constant.EngineRedisConstant;
-import com.nageoffer.onecoupon.distribution.common.enums.CouponSourceEnum;
-import com.nageoffer.onecoupon.distribution.common.enums.CouponStatusEnum;
-import com.nageoffer.onecoupon.distribution.common.enums.CouponTaskStatusEnum;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTaskDO;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTaskFailDO;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.distribution.dao.entity.UserCouponDO;
-import com.nageoffer.onecoupon.distribution.dao.mapper.CouponTaskFailMapper;
-import com.nageoffer.onecoupon.distribution.dao.mapper.CouponTaskMapper;
-import com.nageoffer.onecoupon.distribution.dao.mapper.CouponTemplateMapper;
-import com.nageoffer.onecoupon.distribution.dao.mapper.UserCouponMapper;
-import com.nageoffer.onecoupon.distribution.mq.base.MessageWrapper;
-import com.nageoffer.onecoupon.distribution.mq.event.CouponTemplateDistributionEvent;
-import com.nageoffer.onecoupon.distribution.service.handler.excel.UserCouponTaskFailExcelObject;
+import com.jx.flashcoupon.distribution.common.constant.DistributionRedisConstant;
+import com.jx.flashcoupon.distribution.common.constant.DistributionRocketMQConstant;
+import com.jx.flashcoupon.distribution.common.constant.EngineRedisConstant;
+import com.jx.flashcoupon.distribution.common.enums.CouponSourceEnum;
+import com.jx.flashcoupon.distribution.common.enums.CouponStatusEnum;
+import com.jx.flashcoupon.distribution.common.enums.CouponTaskStatusEnum;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTaskDO;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTaskFailDO;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.distribution.dao.entity.UserCouponDO;
+import com.jx.flashcoupon.distribution.dao.mapper.CouponTaskFailMapper;
+import com.jx.flashcoupon.distribution.dao.mapper.CouponTaskMapper;
+import com.jx.flashcoupon.distribution.dao.mapper.CouponTemplateMapper;
+import com.jx.flashcoupon.distribution.dao.mapper.UserCouponMapper;
+import com.jx.flashcoupon.distribution.mq.base.MessageWrapper;
+import com.jx.flashcoupon.distribution.mq.event.CouponTemplateDistributionEvent;
+import com.jx.flashcoupon.distribution.service.handler.excel.UserCouponTaskFailExcelObject;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -57,14 +57,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-import static com.nageoffer.onecoupon.distribution.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_LIMIT_KEY;
+import static com.jx.flashcoupon.distribution.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_LIMIT_KEY;
 
 /**
  * 优惠券执行分发到用户消费者
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-14
  */
 @Component
 @RequiredArgsConstructor

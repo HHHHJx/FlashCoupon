@@ -6,15 +6,15 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.nageoffer.onecoupon.framework.config.RedisDistributedProperties;
-import com.nageoffer.onecoupon.framework.exception.ClientException;
-import com.nageoffer.onecoupon.settlement.common.context.UserContext;
-import com.nageoffer.onecoupon.settlement.dto.req.QueryCouponGoodsReqDTO;
-import com.nageoffer.onecoupon.settlement.dto.req.QueryCouponsReqDTO;
-import com.nageoffer.onecoupon.settlement.dto.resp.CouponTemplateQueryRespDTO;
-import com.nageoffer.onecoupon.settlement.dto.resp.QueryCouponsDetailRespDTO;
-import com.nageoffer.onecoupon.settlement.dto.resp.QueryCouponsRespDTO;
-import com.nageoffer.onecoupon.settlement.service.CouponQueryService;
+import com.jx.flashcoupon.framework.config.RedisDistributedProperties;
+import com.jx.flashcoupon.framework.exception.ClientException;
+import com.jx.flashcoupon.settlement.common.context.UserContext;
+import com.jx.flashcoupon.settlement.dto.req.QueryCouponGoodsReqDTO;
+import com.jx.flashcoupon.settlement.dto.req.QueryCouponsReqDTO;
+import com.jx.flashcoupon.settlement.dto.resp.CouponTemplateQueryRespDTO;
+import com.jx.flashcoupon.settlement.dto.resp.QueryCouponsDetailRespDTO;
+import com.jx.flashcoupon.settlement.dto.resp.QueryCouponsRespDTO;
+import com.jx.flashcoupon.settlement.service.CouponQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -26,15 +26,15 @@ import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.nageoffer.onecoupon.settlement.common.constant.EngineRedisConstant.COUPON_TEMPLATE_KEY;
-import static com.nageoffer.onecoupon.settlement.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_LIST_KEY;
+import static com.jx.flashcoupon.settlement.common.constant.EngineRedisConstant.COUPON_TEMPLATE_KEY;
+import static com.jx.flashcoupon.settlement.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_LIST_KEY;
 
 /**
  * 查询用户可用优惠券列表接口
  * <p>
  * 作者：Henry Wan
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-25
+ * 开发时间：2025-07-25
  */
 @Service
 @RequiredArgsConstructor

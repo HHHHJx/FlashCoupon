@@ -2,8 +2,8 @@
 
 package com.jx.flashcoupon.settlement.service.strategy;
 
-import com.nageoffer.onecoupon.settlement.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.settlement.dao.entity.ThresholdCouponDO;
+import com.jx.flashcoupon.settlement.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.settlement.dao.entity.ThresholdCouponDO;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * <p>
  * 作者：Henry Wan
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-08-22
+ * 开发时间：2025-08-22
  */
 public class ThresholdCalculationStrategy implements CouponCalculationStrategy {
 

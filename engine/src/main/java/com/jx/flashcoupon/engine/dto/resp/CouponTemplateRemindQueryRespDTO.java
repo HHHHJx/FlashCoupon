@@ -15,7 +15,7 @@ import java.util.List;
  * <p>
  * 作者：优雅
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-16
+ * 开发时间：2025-07-16
  */
 @Data
 @Schema(description = "查询优惠券预约抢券提醒返回实体")

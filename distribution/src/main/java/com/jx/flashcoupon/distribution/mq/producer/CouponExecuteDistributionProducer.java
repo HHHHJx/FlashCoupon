@@ -3,10 +3,10 @@
 package com.jx.flashcoupon.distribution.mq.producer;
 
 import cn.hutool.core.util.StrUtil;
-import com.nageoffer.onecoupon.distribution.common.constant.DistributionRocketMQConstant;
-import com.nageoffer.onecoupon.distribution.mq.base.BaseSendExtendDTO;
-import com.nageoffer.onecoupon.distribution.mq.base.MessageWrapper;
-import com.nageoffer.onecoupon.distribution.mq.event.CouponTemplateDistributionEvent;
+import com.jx.flashcoupon.distribution.common.constant.DistributionRocketMQConstant;
+import com.jx.flashcoupon.distribution.mq.base.BaseSendExtendDTO;
+import com.jx.flashcoupon.distribution.mq.base.MessageWrapper;
+import com.jx.flashcoupon.distribution.mq.event.CouponTemplateDistributionEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageConst;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;

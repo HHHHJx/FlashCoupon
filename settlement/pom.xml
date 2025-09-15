@@ -82,9 +82,8 @@
 
         <!-- 项目基础架构组件包 -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>onecoupon-framework</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.jx</groupId>
+            <artifactId>framework</artifactId>
         </dependency>
 
         <!-- 项目工具包相关依赖 -->

@@ -4,13 +4,13 @@ dataSources:
   ds_0:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://127.0.0.1:3306/one_coupon_0?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/db_coupon_0?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
     password: root
   ds_1:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://127.0.0.1:3306/one_coupon_1?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/db_coupon_1?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
     password: root
 
@@ -28,6 +28,7 @@ rules:
           standard: # 单分片键分表
             shardingColumn: shop_number # 分片键
             shardingAlgorithmName: coupon_template_table_mod # 表分片算法名称，对应 rules[0].shardingAlgorithms
+
       t_coupon_template_log:
         actualDataNodes: ds_${0..1}.t_coupon_template_log_${0..15}
         databaseStrategy:
@@ -38,30 +39,34 @@ rules:
           standard:
             shardingColumn: shop_number
             shardingAlgorithmName: coupon_template_log_table_mod
+
     shardingAlgorithms: # 分片算法定义集合
       coupon_template_database_mod: # 优惠券分库算法定义
         type: CLASS_BASED # 根据自定义库分片算法类进行分片
         props: # 分片相关属性
           # 自定义库分片算法Class
-          algorithmClassName: com.nageoffer.onecoupon.merchant.admin.dao.sharding.DBHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.merchant.admin.dao.sharding.DBHashModShardingAlgorithm
           sharding-count: 16 # 分片总数量
           strategy: standard # 分片类型，单字段分片
+
       coupon_template_table_mod: # 优惠券分表算法定义
         type: CLASS_BASED # 根据自定义库分片算法类进行分片
         props: # 分片相关属性
           # 自定义表分片算法Class
-          algorithmClassName: com.nageoffer.onecoupon.merchant.admin.dao.sharding.TableHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.merchant.admin.dao.sharding.TableHashModShardingAlgorithm
           strategy: standard # 分片类型，单字段分片
+
       coupon_template_log_database_mod:
         type: CLASS_BASED
         props:
-          algorithmClassName: com.nageoffer.onecoupon.merchant.admin.dao.sharding.DBHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.merchant.admin.dao.sharding.DBHashModShardingAlgorithm
           sharding-count: 16
           strategy: standard
+          
       coupon_template_log_table_mod:
         type: CLASS_BASED
         props:
-          algorithmClassName: com.nageoffer.onecoupon.merchant.admin.dao.sharding.TableHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.merchant.admin.dao.sharding.TableHashModShardingAlgorithm
           strategy: standard
 
 props:

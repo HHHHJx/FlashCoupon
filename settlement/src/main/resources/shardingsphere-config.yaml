@@ -64,14 +64,14 @@ rules:
         type: CLASS_BASED # 根据自定义库分片算法类进行分片
         props: # 分片相关属性
           # 自定义库分片算法Class
-          algorithmClassName: com.nageoffer.onecoupon.settlement.dao.sharding.DBHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.settlement.dao.sharding.DBHashModShardingAlgorithm
           sharding-count: 16 # 分片总数量
           strategy: standard # 分片类型，单字段分片
       coupon_settlement_table_mod: # 结算分表算法定义
         type: CLASS_BASED # 根据自定义库分片算法类进行分片
         props: # 分片相关属性
           # 自定义表分片算法Class
-          algorithmClassName: com.nageoffer.onecoupon.settlement.dao.sharding.TableHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.settlement.dao.sharding.TableHashModShardingAlgorithm
           strategy: standard # 分片类型，单字段分片
 
 props:

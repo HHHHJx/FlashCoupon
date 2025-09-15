@@ -4,13 +4,13 @@ package com.jx.flashcoupon.engine.service.handler.remind;
 
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
-import com.nageoffer.onecoupon.engine.common.enums.CouponRemindTypeEnum;
-import com.nageoffer.onecoupon.engine.mq.event.CouponTemplateRemindDelayEvent;
-import com.nageoffer.onecoupon.engine.mq.producer.CouponTemplateRemindDelayProducer;
-import com.nageoffer.onecoupon.engine.service.CouponTemplateRemindService;
-import com.nageoffer.onecoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
-import com.nageoffer.onecoupon.engine.service.handler.remind.impl.SendAppMessageRemindCouponTemplate;
-import com.nageoffer.onecoupon.engine.service.handler.remind.impl.SendEmailRemindCouponTemplate;
+import com.jx.flashcoupon.engine.common.enums.CouponRemindTypeEnum;
+import com.jx.flashcoupon.engine.mq.event.CouponTemplateRemindDelayEvent;
+import com.jx.flashcoupon.engine.mq.producer.CouponTemplateRemindDelayProducer;
+import com.jx.flashcoupon.engine.service.CouponTemplateRemindService;
+import com.jx.flashcoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
+import com.jx.flashcoupon.engine.service.handler.remind.impl.SendAppMessageRemindCouponTemplate;
+import com.jx.flashcoupon.engine.service.handler.remind.impl.SendEmailRemindCouponTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBlockingDeque;
@@ -23,14 +23,14 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 import java.util.concurrent.*;
 
-import static com.nageoffer.onecoupon.engine.common.constant.EngineRedisConstant.COUPON_REMIND_CHECK_KEY;
+import static com.jx.flashcoupon.engine.common.constant.EngineRedisConstant.COUPON_REMIND_CHECK_KEY;
 
 /**
  * 执行相应的抢券提醒
  * <p>
  * 作者：优雅
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-18
+ * 开发时间：2025-07-18
  */
 @Slf4j
 @Component

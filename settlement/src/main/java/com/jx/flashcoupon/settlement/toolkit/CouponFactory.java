@@ -2,15 +2,15 @@
 
 package com.jx.flashcoupon.settlement.toolkit;
 
-import com.nageoffer.onecoupon.settlement.common.enums.DiscountTypeEnum;
-import com.nageoffer.onecoupon.settlement.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.settlement.dao.entity.DiscountCouponDO;
-import com.nageoffer.onecoupon.settlement.dao.entity.FixedDiscountCouponDO;
-import com.nageoffer.onecoupon.settlement.dao.entity.ThresholdCouponDO;
-import com.nageoffer.onecoupon.settlement.service.strategy.CouponCalculationStrategy;
-import com.nageoffer.onecoupon.settlement.service.strategy.DiscountCalculationStrategy;
-import com.nageoffer.onecoupon.settlement.service.strategy.FixedDiscountCalculationStrategy;
-import com.nageoffer.onecoupon.settlement.service.strategy.ThresholdCalculationStrategy;
+import com.jx.flashcoupon.settlement.common.enums.DiscountTypeEnum;
+import com.jx.flashcoupon.settlement.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.settlement.dao.entity.DiscountCouponDO;
+import com.jx.flashcoupon.settlement.dao.entity.FixedDiscountCouponDO;
+import com.jx.flashcoupon.settlement.dao.entity.ThresholdCouponDO;
+import com.jx.flashcoupon.settlement.service.strategy.CouponCalculationStrategy;
+import com.jx.flashcoupon.settlement.service.strategy.DiscountCalculationStrategy;
+import com.jx.flashcoupon.settlement.service.strategy.FixedDiscountCalculationStrategy;
+import com.jx.flashcoupon.settlement.service.strategy.ThresholdCalculationStrategy;
 
 import java.util.Map;
 
@@ -19,7 +19,7 @@ import java.util.Map;
  * <p>
  * 作者：Henry Wan
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-24
+ * 开发时间：2025-07-24
  */
 public class CouponFactory {
 

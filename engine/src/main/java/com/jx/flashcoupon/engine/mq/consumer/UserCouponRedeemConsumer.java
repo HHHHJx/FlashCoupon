@@ -8,19 +8,19 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.nageoffer.onecoupon.engine.common.constant.EngineRedisConstant;
-import com.nageoffer.onecoupon.engine.common.constant.EngineRockerMQConstant;
-import com.nageoffer.onecoupon.engine.common.enums.UserCouponStatusEnum;
-import com.nageoffer.onecoupon.engine.dao.entity.UserCouponDO;
-import com.nageoffer.onecoupon.engine.dao.mapper.CouponTemplateMapper;
-import com.nageoffer.onecoupon.engine.dao.mapper.UserCouponMapper;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRedeemReqDTO;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
-import com.nageoffer.onecoupon.engine.mq.base.MessageWrapper;
-import com.nageoffer.onecoupon.engine.mq.event.UserCouponDelayCloseEvent;
-import com.nageoffer.onecoupon.engine.mq.event.UserCouponRedeemEvent;
-import com.nageoffer.onecoupon.engine.mq.producer.UserCouponDelayCloseProducer;
-import com.nageoffer.onecoupon.framework.idempotent.NoMQDuplicateConsume;
+import com.jx.flashcoupon.engine.common.constant.EngineRedisConstant;
+import com.jx.flashcoupon.engine.common.constant.EngineRockerMQConstant;
+import com.jx.flashcoupon.engine.common.enums.UserCouponStatusEnum;
+import com.jx.flashcoupon.engine.dao.entity.UserCouponDO;
+import com.jx.flashcoupon.engine.dao.mapper.CouponTemplateMapper;
+import com.jx.flashcoupon.engine.dao.mapper.UserCouponMapper;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRedeemReqDTO;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
+import com.jx.flashcoupon.engine.mq.base.MessageWrapper;
+import com.jx.flashcoupon.engine.mq.event.UserCouponDelayCloseEvent;
+import com.jx.flashcoupon.engine.mq.event.UserCouponRedeemEvent;
+import com.jx.flashcoupon.engine.mq.producer.UserCouponDelayCloseProducer;
+import com.jx.flashcoupon.framework.idempotent.NoMQDuplicateConsume;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -34,10 +34,8 @@ import java.util.Date;
 
 /**
  * 用户兑换优惠券消息消费者
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-09-10
+
+ * 开发时间：2025-09-10
  */
 @Component
 @RequiredArgsConstructor

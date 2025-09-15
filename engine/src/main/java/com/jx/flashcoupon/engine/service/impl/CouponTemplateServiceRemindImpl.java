@@ -9,23 +9,23 @@ import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.nageoffer.onecoupon.engine.common.context.UserContext;
-import com.nageoffer.onecoupon.engine.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.engine.dao.entity.CouponTemplateRemindDO;
-import com.nageoffer.onecoupon.engine.dao.mapper.CouponTemplateRemindMapper;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateQueryReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRemindCancelReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRemindCreateReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRemindQueryReqDTO;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateRemindQueryRespDTO;
-import com.nageoffer.onecoupon.engine.mq.event.CouponTemplateRemindDelayEvent;
-import com.nageoffer.onecoupon.engine.mq.producer.CouponTemplateRemindDelayProducer;
-import com.nageoffer.onecoupon.engine.service.CouponTemplateRemindService;
-import com.nageoffer.onecoupon.engine.service.CouponTemplateService;
-import com.nageoffer.onecoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
-import com.nageoffer.onecoupon.engine.toolkit.CouponTemplateRemindUtil;
-import com.nageoffer.onecoupon.framework.exception.ClientException;
+import com.jx.flashcoupon.engine.common.context.UserContext;
+import com.jx.flashcoupon.engine.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.engine.dao.entity.CouponTemplateRemindDO;
+import com.jx.flashcoupon.engine.dao.mapper.CouponTemplateRemindMapper;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateQueryReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRemindCancelReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRemindCreateReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRemindQueryReqDTO;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateRemindQueryRespDTO;
+import com.jx.flashcoupon.engine.mq.event.CouponTemplateRemindDelayEvent;
+import com.jx.flashcoupon.engine.mq.producer.CouponTemplateRemindDelayProducer;
+import com.jx.flashcoupon.engine.service.CouponTemplateRemindService;
+import com.jx.flashcoupon.engine.service.CouponTemplateService;
+import com.jx.flashcoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
+import com.jx.flashcoupon.engine.toolkit.CouponTemplateRemindUtil;
+import com.jx.flashcoupon.framework.exception.ClientException;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBloomFilter;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -38,14 +38,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.nageoffer.onecoupon.engine.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_REMIND_INFORMATION;
+import static com.jx.flashcoupon.engine.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_REMIND_INFORMATION;
 
 /**
  * 优惠券预约提醒业务逻辑实现层
  * <p>
  * 作者：优雅
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-16
+ * 开发时间：2025-07-16
  */
 @Service
 @RequiredArgsConstructor

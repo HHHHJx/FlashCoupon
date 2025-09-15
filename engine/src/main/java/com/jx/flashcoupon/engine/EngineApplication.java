@@ -1,10 +1,11 @@
 package com.jx.flashcoupon.engine;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.jx.engine.dao.mapper")
+@MapperScan("com.jx.flashcoupon.engine.dao.mapper")
 public class EngineApplication {
 
     public static void main(String[] args) {

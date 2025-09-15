@@ -10,15 +10,15 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.nageoffer.onecoupon.distribution.common.constant.DistributionRedisConstant;
-import com.nageoffer.onecoupon.distribution.common.constant.EngineRedisConstant;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTaskDO;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTaskFailDO;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.distribution.dao.mapper.CouponTaskFailMapper;
-import com.nageoffer.onecoupon.distribution.mq.event.CouponTemplateDistributionEvent;
-import com.nageoffer.onecoupon.distribution.mq.producer.CouponExecuteDistributionProducer;
-import com.nageoffer.onecoupon.distribution.toolkit.StockDecrementReturnCombinedUtil;
+import com.jx.flashcoupon.distribution.common.constant.DistributionRedisConstant;
+import com.jx.flashcoupon.distribution.common.constant.EngineRedisConstant;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTaskDO;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTaskFailDO;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.distribution.dao.mapper.CouponTaskFailMapper;
+import com.jx.flashcoupon.distribution.mq.event.CouponTemplateDistributionEvent;
+import com.jx.flashcoupon.distribution.mq.producer.CouponExecuteDistributionProducer;
+import com.jx.flashcoupon.distribution.toolkit.StockDecrementReturnCombinedUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -28,11 +28,7 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import java.util.Map;
 
 /**
- * 优惠券任务读取 Excel 分发监听器
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-14
+ * 优惠券任务读取 Excel 分发监听
  */
 @RequiredArgsConstructor
 public class ReadExcelDistributionListener extends AnalysisEventListener<CouponTaskExcelObject> {

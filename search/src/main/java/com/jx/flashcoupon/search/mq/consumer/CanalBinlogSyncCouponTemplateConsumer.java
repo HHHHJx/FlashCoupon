@@ -4,11 +4,11 @@ package com.jx.flashcoupon.search.mq.consumer;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import com.nageoffer.onecoupon.search.common.constant.SearchRockerMQConstant;
-import com.nageoffer.onecoupon.search.common.enums.CouponTemplateStatusEnum;
-import com.nageoffer.onecoupon.search.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.search.dao.entity.CouponTemplateDoc;
-import com.nageoffer.onecoupon.search.mq.event.CanalBinlogEvent;
+import com.jx.flashcoupon.search.common.constant.SearchRockerMQConstant;
+import com.jx.flashcoupon.search.common.enums.CouponTemplateStatusEnum;
+import com.jx.flashcoupon.search.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.search.dao.entity.CouponTemplateDoc;
+import com.jx.flashcoupon.search.mq.event.CanalBinlogEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -20,10 +20,6 @@ import java.util.Map;
 
 /**
  * 通过 Canal 监听优惠券模板表 Binlog 投递消息队列消费
- * <p>
- * 作者：蛋仔
- * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-31
  */
 @Slf4j
 @Component

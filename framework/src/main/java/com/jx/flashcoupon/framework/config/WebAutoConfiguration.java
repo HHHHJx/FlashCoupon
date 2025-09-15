@@ -1,5 +1,6 @@
 package com.jx.flashcoupon.framework.config;
 
+import com.jx.flashcoupon.framework.web.GlobalExceptionHandler;
 import org.springframework.context.annotation.Bean;
 
 /**

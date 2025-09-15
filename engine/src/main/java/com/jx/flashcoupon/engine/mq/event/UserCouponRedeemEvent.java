@@ -2,8 +2,8 @@
 
 package com.jx.flashcoupon.engine.mq.event;
 
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRedeemReqDTO;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRedeemReqDTO;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * 用户兑换优惠券事件
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-09-10
+
+ * 开发时间：2025-09-10
  */
 @Data
 @Builder

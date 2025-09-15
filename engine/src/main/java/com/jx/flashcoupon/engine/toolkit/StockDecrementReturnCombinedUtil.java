@@ -4,10 +4,8 @@ package com.jx.flashcoupon.engine.toolkit;
 
 /**
  * 扣减优惠券模板库存复合返回工具类
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-17
+
+ * 开发时间：2025-07-17
  */
 public final class StockDecrementReturnCombinedUtil {
 

@@ -58,4 +58,4 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
-      packages-to-scan: com.nageoffer.onecoupon
+      packages-to-scan: com.jx.flashcoupon

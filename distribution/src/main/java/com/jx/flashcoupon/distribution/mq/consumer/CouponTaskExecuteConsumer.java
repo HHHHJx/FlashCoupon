@@ -6,19 +6,19 @@ import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.nageoffer.onecoupon.distribution.common.constant.DistributionRocketMQConstant;
-import com.nageoffer.onecoupon.distribution.common.enums.CouponTaskStatusEnum;
-import com.nageoffer.onecoupon.distribution.common.enums.CouponTemplateStatusEnum;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTemplateDO;
-import com.nageoffer.onecoupon.distribution.dao.mapper.CouponTaskFailMapper;
-import com.nageoffer.onecoupon.distribution.dao.mapper.CouponTaskMapper;
-import com.nageoffer.onecoupon.distribution.dao.mapper.CouponTemplateMapper;
-import com.nageoffer.onecoupon.distribution.mq.base.MessageWrapper;
-import com.nageoffer.onecoupon.distribution.mq.event.CouponTaskExecuteEvent;
-import com.nageoffer.onecoupon.distribution.mq.producer.CouponExecuteDistributionProducer;
-import com.nageoffer.onecoupon.distribution.service.handler.excel.CouponTaskExcelObject;
-import com.nageoffer.onecoupon.distribution.service.handler.excel.ReadExcelDistributionListener;
-import com.nageoffer.onecoupon.framework.idempotent.NoMQDuplicateConsume;
+import com.jx.flashcoupon.distribution.common.constant.DistributionRocketMQConstant;
+import com.jx.flashcoupon.distribution.common.enums.CouponTaskStatusEnum;
+import com.jx.flashcoupon.distribution.common.enums.CouponTemplateStatusEnum;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTemplateDO;
+import com.jx.flashcoupon.distribution.dao.mapper.CouponTaskFailMapper;
+import com.jx.flashcoupon.distribution.dao.mapper.CouponTaskMapper;
+import com.jx.flashcoupon.distribution.dao.mapper.CouponTemplateMapper;
+import com.jx.flashcoupon.distribution.mq.base.MessageWrapper;
+import com.jx.flashcoupon.distribution.mq.event.CouponTaskExecuteEvent;
+import com.jx.flashcoupon.distribution.mq.producer.CouponExecuteDistributionProducer;
+import com.jx.flashcoupon.distribution.service.handler.excel.CouponTaskExcelObject;
+import com.jx.flashcoupon.distribution.service.handler.excel.ReadExcelDistributionListener;
+import com.jx.flashcoupon.framework.idempotent.NoMQDuplicateConsume;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -28,10 +28,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * 优惠券推送定时执行-真实执行消费者
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-13
+
+ * 开发时间：2025-07-13
  */
 @Component
 @RequiredArgsConstructor

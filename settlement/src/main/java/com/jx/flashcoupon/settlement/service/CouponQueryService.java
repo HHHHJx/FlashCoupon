@@ -2,15 +2,15 @@
 
 package com.jx.flashcoupon.settlement.service;
 
-import com.nageoffer.onecoupon.settlement.dto.req.QueryCouponsReqDTO;
-import com.nageoffer.onecoupon.settlement.dto.resp.QueryCouponsRespDTO;
+import com.jx.flashcoupon.settlement.dto.req.QueryCouponsReqDTO;
+import com.jx.flashcoupon.settlement.dto.resp.QueryCouponsRespDTO;
 
 /**
  * 查询用户可用优惠券列表接口
  * <p>
  * 作者：Henry Wan
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-23
+ * 开发时间：2025-07-23
  */
 public interface CouponQueryService {
 

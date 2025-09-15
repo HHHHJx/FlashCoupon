@@ -3,7 +3,7 @@
 package com.jx.flashcoupon.distribution.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.nageoffer.onecoupon.distribution.dao.entity.CouponTaskDO;
+import com.jx.flashcoupon.distribution.dao.entity.CouponTaskDO;
 
 /**
  * 优惠券推送任务数据库持久层

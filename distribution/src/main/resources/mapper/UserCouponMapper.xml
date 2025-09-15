@@ -37,11 +37,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nageoffer.onecoupon.distribution.dao.mapper.UserCouponMapper">
+<mapper namespace="com.jx.flashcoupon.distribution.dao.mapper.UserCouponMapper">
 
     <!-- 查询用户优惠券最大领取次数 -->
     <select id="selectUserCourseMaxReceiveCount"
-            resultType="com.nageoffer.onecoupon.distribution.dao.entity.UserCouponDO">
+            resultType="com.jx.flashcoupon.distribution.dao.entity.UserCouponDO">
         SELECT a.user_id,
         a.receive_count
         FROM t_user_coupon AS a

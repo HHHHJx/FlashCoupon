@@ -1,5 +1,7 @@
 package com.jx.flashcoupon.framework.config;
 
+import com.jx.flashcoupon.framework.idempotent.NoDuplicateSubmitAspect;
+import com.jx.flashcoupon.framework.idempotent.NoMQDuplicateConsumeAspect;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.StringRedisTemplate;

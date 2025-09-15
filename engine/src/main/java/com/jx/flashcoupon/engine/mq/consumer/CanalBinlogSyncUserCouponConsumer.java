@@ -7,11 +7,11 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
-import com.nageoffer.onecoupon.engine.common.constant.EngineRedisConstant;
-import com.nageoffer.onecoupon.engine.common.constant.EngineRockerMQConstant;
-import com.nageoffer.onecoupon.engine.mq.event.CanalBinlogEvent;
-import com.nageoffer.onecoupon.engine.mq.event.UserCouponDelayCloseEvent;
-import com.nageoffer.onecoupon.engine.mq.producer.UserCouponDelayCloseProducer;
+import com.jx.flashcoupon.engine.common.constant.EngineRedisConstant;
+import com.jx.flashcoupon.engine.common.constant.EngineRockerMQConstant;
+import com.jx.flashcoupon.engine.mq.event.CanalBinlogEvent;
+import com.jx.flashcoupon.engine.mq.event.UserCouponDelayCloseEvent;
+import com.jx.flashcoupon.engine.mq.producer.UserCouponDelayCloseProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -26,10 +26,8 @@ import java.util.Map;
 
 /**
  * 通过 Canal 监听用户优惠券表 Binlog 投递消息队列消费
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-25
+
+ * 开发时间：2025-07-25
  */
 @Slf4j
 @Component
@@ -43,7 +41,7 @@ public class CanalBinlogSyncUserCouponConsumer implements RocketMQListener<Canal
     private final StringRedisTemplate stringRedisTemplate;
     private final UserCouponDelayCloseProducer couponDelayCloseProducer;
 
-    @Value("${one-coupon.user-coupon-list.save-cache.type:direct}")
+    @Value("${flash-coupon.user-coupon-list.save-cache.type:direct}")
     private String userCouponListSaveCacheType;
 
     @Override

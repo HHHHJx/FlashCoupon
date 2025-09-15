@@ -4,7 +4,7 @@ package com.jx.flashcoupon.engine.mq.producer;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
-import com.nageoffer.onecoupon.engine.mq.base.BaseSendExtendDTO;
+import com.jx.flashcoupon.engine.mq.base.BaseSendExtendDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -13,10 +13,7 @@ import org.springframework.messaging.Message;
 
 /**
  * RocketMQ 抽象公共发送消息组件
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-18
+ * 开发时间：2025-07-18
  */
 @RequiredArgsConstructor
 @Slf4j(topic = "CommonSendProduceTemplate")

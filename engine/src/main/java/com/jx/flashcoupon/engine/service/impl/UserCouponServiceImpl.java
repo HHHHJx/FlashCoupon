@@ -15,26 +15,26 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.nageoffer.onecoupon.engine.common.constant.EngineRedisConstant;
-import com.nageoffer.onecoupon.engine.common.context.UserContext;
-import com.nageoffer.onecoupon.engine.common.enums.RedisStockDecrementErrorEnum;
-import com.nageoffer.onecoupon.engine.common.enums.UserCouponStatusEnum;
-import com.nageoffer.onecoupon.engine.dao.entity.CouponSettlementDO;
-import com.nageoffer.onecoupon.engine.dao.entity.UserCouponDO;
-import com.nageoffer.onecoupon.engine.dao.mapper.CouponSettlementMapper;
-import com.nageoffer.onecoupon.engine.dao.mapper.CouponTemplateMapper;
-import com.nageoffer.onecoupon.engine.dao.mapper.UserCouponMapper;
-import com.nageoffer.onecoupon.engine.dto.req.*;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
-import com.nageoffer.onecoupon.engine.mq.event.UserCouponDelayCloseEvent;
-import com.nageoffer.onecoupon.engine.mq.event.UserCouponRedeemEvent;
-import com.nageoffer.onecoupon.engine.mq.producer.UserCouponDelayCloseProducer;
-import com.nageoffer.onecoupon.engine.mq.producer.UserCouponRedeemProducer;
-import com.nageoffer.onecoupon.engine.service.CouponTemplateService;
-import com.nageoffer.onecoupon.engine.service.UserCouponService;
-import com.nageoffer.onecoupon.engine.toolkit.StockDecrementReturnCombinedUtil;
-import com.nageoffer.onecoupon.framework.exception.ClientException;
-import com.nageoffer.onecoupon.framework.exception.ServiceException;
+import com.jx.flashcoupon.engine.common.constant.EngineRedisConstant;
+import com.jx.flashcoupon.engine.common.context.UserContext;
+import com.jx.flashcoupon.engine.common.enums.RedisStockDecrementErrorEnum;
+import com.jx.flashcoupon.engine.common.enums.UserCouponStatusEnum;
+import com.jx.flashcoupon.engine.dao.entity.CouponSettlementDO;
+import com.jx.flashcoupon.engine.dao.entity.UserCouponDO;
+import com.jx.flashcoupon.engine.dao.mapper.CouponSettlementMapper;
+import com.jx.flashcoupon.engine.dao.mapper.CouponTemplateMapper;
+import com.jx.flashcoupon.engine.dao.mapper.UserCouponMapper;
+import com.jx.flashcoupon.engine.dto.req.*;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateQueryRespDTO;
+import com.jx.flashcoupon.engine.mq.event.UserCouponDelayCloseEvent;
+import com.jx.flashcoupon.engine.mq.event.UserCouponRedeemEvent;
+import com.jx.flashcoupon.engine.mq.producer.UserCouponDelayCloseProducer;
+import com.jx.flashcoupon.engine.mq.producer.UserCouponRedeemProducer;
+import com.jx.flashcoupon.engine.service.CouponTemplateService;
+import com.jx.flashcoupon.engine.service.UserCouponService;
+import com.jx.flashcoupon.engine.toolkit.StockDecrementReturnCombinedUtil;
+import com.jx.flashcoupon.framework.exception.ClientException;
+import com.jx.flashcoupon.framework.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -54,14 +54,12 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.nageoffer.onecoupon.engine.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_LIST_KEY;
+import static com.jx.flashcoupon.engine.common.constant.EngineRedisConstant.USER_COUPON_TEMPLATE_LIST_KEY;
 
 /**
  * 用户优惠券业务逻辑实现层
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-25
+
+ * 开发时间：2025-07-25
  */
 @Slf4j
 @Service
@@ -79,179 +77,320 @@ public class UserCouponServiceImpl implements UserCouponService {
     private final RedissonClient redissonClient;
     private final TransactionTemplate transactionTemplate;
 
-    @Value("${one-coupon.user-coupon-list.save-cache.type:direct}")
+    @Value("${flash-coupon.user-coupon-list.save-cache.type:direct}")
     private String userCouponListSaveCacheType;
 
     private final static String STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH = "lua/stock_decrement_and_save_user_receive.lua";
 
+    // 秒杀/兑换用户优惠券
     @Override
     public void redeemUserCoupon(CouponTemplateRedeemReqDTO requestParam) {
-        // 验证缓存是否存在，保障数据存在并且缓存中存在
-        CouponTemplateQueryRespDTO couponTemplate = couponTemplateService.findCouponTemplate(BeanUtil.toBean(requestParam, CouponTemplateQueryReqDTO.class));
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            // 根据流量大小动态选择处理模式
+            if (shouldUseAsyncMode()) {
+                log.info("[自适应模式] 当前系统负载较高，自动切换到异步模式处理优惠券兑换，用户ID：{}", UserContext.getUserId());
+                // 直接调用异步方法处理
+                redeemUserCouponByMQ(requestParam);
+                return;
+            }
+            
+            // 验证缓存是否存在，保障数据存在并且缓存中存在
+            CouponTemplateQueryRespDTO couponTemplate = couponTemplateService.findCouponTemplate(BeanUtil.toBean(requestParam, CouponTemplateQueryReqDTO.class));
 
-        // 验证领取的优惠券是否在活动有效时间
-        boolean isInTime = DateUtil.isIn(new Date(), couponTemplate.getValidStartTime(), couponTemplate.getValidEndTime());
-        if (!isInTime) {
-            // 一般来说优惠券领取时间不到的时候，前端不会放开调用请求，可以理解这是用户调用接口在“攻击”
-            throw new ClientException("不满足优惠券领取时间");
-        }
+            // 验证领取的优惠券是否在活动有效时间
+            boolean isInTime = DateUtil.isIn(new Date(), couponTemplate.getValidStartTime(), couponTemplate.getValidEndTime());
+            if (!isInTime) {
+                // 一般来说优惠券领取时间不到的时候，前端不会放开调用请求，可以理解这是用户调用接口在“攻击”
+                throw new ClientException("不满足优惠券领取时间");
+            }
 
-        // 获取 LUA 脚本，并保存到 Hutool 的单例管理容器，下次直接获取不需要加载
-        DefaultRedisScript<Long> buildLuaScript = Singleton.get(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH, () -> {
-            DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
-            redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH)));
-            redisScript.setResultType(Long.class);
-            return redisScript;
-        });
+            // 获取 LUA 脚本，并保存到 Hutool 的单例管理容器，下次直接获取不需要加载
+            DefaultRedisScript<Long> buildLuaScript = Singleton.get(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH, () -> {
+                DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+                redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH)));
+                redisScript.setResultType(Long.class);
+                return redisScript;
+            });
 
-        // 验证用户是否符合优惠券领取条件
-        JSONObject receiveRule = JSON.parseObject(couponTemplate.getReceiveRule());
-        String limitPerPerson = receiveRule.getString("limitPerPerson");
+            // 验证用户是否符合优惠券领取条件
+            JSONObject receiveRule = JSON.parseObject(couponTemplate.getReceiveRule());
+            String limitPerPerson = receiveRule.getString("limitPerPerson");// 优惠券领取限制数量
 
-        // 执行 LUA 脚本进行扣减库存以及增加 Redis 用户领券记录次数
-        String couponTemplateCacheKey = String.format(EngineRedisConstant.COUPON_TEMPLATE_KEY, requestParam.getCouponTemplateId());
-        String userCouponTemplateLimitCacheKey = String.format(EngineRedisConstant.USER_COUPON_TEMPLATE_LIMIT_KEY, UserContext.getUserId(), requestParam.getCouponTemplateId());
-        Long stockDecrementLuaResult = stringRedisTemplate.execute(
-                buildLuaScript,
-                ListUtil.of(couponTemplateCacheKey, userCouponTemplateLimitCacheKey),
-                String.valueOf(couponTemplate.getValidEndTime().getTime()), limitPerPerson
-        );
+            // 执行 LUA 脚本进行扣减库存以及增加 Redis 用户领券记录次数
+            String couponTemplateCacheKey = String.format(EngineRedisConstant.COUPON_TEMPLATE_KEY, requestParam.getCouponTemplateId());
+            String userCouponTemplateLimitCacheKey = String.format(EngineRedisConstant.USER_COUPON_TEMPLATE_LIMIT_KEY, UserContext.getUserId(), requestParam.getCouponTemplateId());
+            Long stockDecrementLuaResult = stringRedisTemplate.execute(
+                    buildLuaScript,
+                    ListUtil.of(couponTemplateCacheKey, userCouponTemplateLimitCacheKey),
+                    String.valueOf(couponTemplate.getValidEndTime().getTime()), limitPerPerson
+            );
 
-        // 判断 LUA 脚本执行返回类，如果失败根据类型返回报错提示
-        long firstField = StockDecrementReturnCombinedUtil.extractFirstField(stockDecrementLuaResult);
-        if (RedisStockDecrementErrorEnum.isFail(firstField)) {
-            throw new ServiceException(RedisStockDecrementErrorEnum.fromType(firstField));
-        }
+            // 判断 LUA 脚本执行返回类，如果失败根据类型返回报错提示
+            long firstField = StockDecrementReturnCombinedUtil.extractFirstField(stockDecrementLuaResult);
+            if (RedisStockDecrementErrorEnum.isFail(firstField)) {
+                throw new ServiceException(RedisStockDecrementErrorEnum.fromType(firstField));
+            }
 
-        // 通过编程式事务执行优惠券库存自减以及增加用户优惠券领取记录
-        long extractSecondField = StockDecrementReturnCombinedUtil.extractSecondField(stockDecrementLuaResult);
-        transactionTemplate.executeWithoutResult(status -> {
-            try {
-                int decremented = couponTemplateMapper.decrementCouponTemplateStock(Long.parseLong(requestParam.getShopNumber()), Long.parseLong(requestParam.getCouponTemplateId()), 1L);
-                if (!SqlHelper.retBool(decremented)) {
-                    throw new ServiceException("优惠券已被领取完啦");
-                }
+            // 通过编程式事务执行优惠券库存自减以及增加用户优惠券领取记录
+            long extractSecondField = StockDecrementReturnCombinedUtil.extractSecondField(stockDecrementLuaResult);
+            transactionTemplate.executeWithoutResult(status -> {
+                try {
+                    int decremented = couponTemplateMapper.decrementCouponTemplateStock(Long.parseLong(requestParam.getShopNumber()), Long.parseLong(requestParam.getCouponTemplateId()), 1L);
+                    if (!SqlHelper.retBool(decremented)) {
+                        throw new ServiceException("优惠券已被领取完啦");
+                    }
 
-                // 添加 Redis 用户领取的优惠券记录列表
-                Date now = new Date();
-                DateTime validEndTime = DateUtil.offsetHour(now, JSON.parseObject(couponTemplate.getConsumeRule()).getInteger("validityPeriod"));
-                UserCouponDO userCouponDO = UserCouponDO.builder()
-                        .couponTemplateId(Long.parseLong(requestParam.getCouponTemplateId()))
-                        .userId(Long.parseLong(UserContext.getUserId()))
-                        .source(requestParam.getSource())
-                        .receiveCount(Long.valueOf(extractSecondField).intValue())
-                        .status(UserCouponStatusEnum.UNUSED.getCode())
-                        .receiveTime(now)
-                        .validStartTime(now)
-                        .validEndTime(validEndTime)
-                        .build();
-                userCouponMapper.insert(userCouponDO);
+                    // 添加 Redis 用户领取的优惠券记录列表
+                    Date now = new Date();
+                    DateTime validEndTime = DateUtil.offsetHour(now, JSON.parseObject(couponTemplate.getConsumeRule()).getInteger("validityPeriod"));
+                    UserCouponDO userCouponDO = UserCouponDO.builder()
+                            .couponTemplateId(Long.parseLong(requestParam.getCouponTemplateId()))
+                            .userId(Long.parseLong(UserContext.getUserId()))
+                            .source(requestParam.getSource())
+                            .receiveCount(Long.valueOf(extractSecondField).intValue())
+                            .status(UserCouponStatusEnum.UNUSED.getCode())
+                            .receiveTime(now)
+                            .validStartTime(now)
+                            .validEndTime(validEndTime)
+                            .build();
+                    userCouponMapper.insert(userCouponDO);
 
-                // 保存优惠券缓存集合有两个选项：direct 在流程里直接操作，binlog 通过解析数据库日志后操作
-                if (StrUtil.equals(userCouponListSaveCacheType, "direct")) {
-                    // 添加用户领取优惠券模板缓存记录
-                    String userCouponListCacheKey = String.format(EngineRedisConstant.USER_COUPON_TEMPLATE_LIST_KEY, UserContext.getUserId());
-                    String userCouponItemCacheKey = StrUtil.builder()
-                            .append(requestParam.getCouponTemplateId())
-                            .append("_")
-                            .append(userCouponDO.getId())
-                            .toString();
-                    stringRedisTemplate.opsForZSet().add(userCouponListCacheKey, userCouponItemCacheKey, now.getTime());
+                    // 保存优惠券缓存集合有两个选项：direct 在流程里直接操作，binlog 通过解析数据库日志后操作
+                    if (StrUtil.equals(userCouponListSaveCacheType, "direct")) {
+                        // 添加用户领取优惠券模板缓存记录
+                        String userCouponListCacheKey = String.format(EngineRedisConstant.USER_COUPON_TEMPLATE_LIST_KEY, UserContext.getUserId());
+                        String userCouponItemCacheKey = StrUtil.builder()
+                                .append(requestParam.getCouponTemplateId())
+                                .append("_")
+                                .append(userCouponDO.getId())
+                                .toString();
+                        stringRedisTemplate.opsForZSet().add(userCouponListCacheKey, userCouponItemCacheKey, now.getTime());
 
-                    // 由于 Redis 在持久化或主从复制的极端情况下可能会出现数据丢失，而我们对指令丢失几乎无法容忍，因此我们采用经典的写后查询策略来应对这一问题
-                    Double scored;
-                    try {
-                        scored = stringRedisTemplate.opsForZSet().score(userCouponListCacheKey, userCouponItemCacheKey);
-                        // scored 为空意味着可能 Redis Cluster 主从同步丢失了数据，比如 Redis 主节点还没有同步到从节点就宕机了，解决方案就是再新增一次
-                        if (scored == null) {
-                            // 如果这里也新增失败了怎么办？我们大概率做不到绝对的万无一失，只能尽可能增加成功率
+                        // 由于 Redis 在持久化或主从复制的极端情况下可能会出现数据丢失，而我们对指令丢失几乎无法容忍，因此我们采用经典的写后查询策略来应对这一问题
+                        Double scored;
+                        try {
+                            scored = stringRedisTemplate.opsForZSet().score(userCouponListCacheKey, userCouponItemCacheKey);
+                            // scored 为空意味着可能 Redis Cluster 主从同步丢失了数据，比如 Redis 主节点还没有同步到从节点就宕机了，解决方案就是再新增一次
+                            if (scored == null) {
+                                // 如果这里也新增失败了怎么办？我们大概率做不到绝对的万无一失，只能尽可能增加成功率
+                                stringRedisTemplate.opsForZSet().add(userCouponListCacheKey, userCouponItemCacheKey, now.getTime());
+                            }
+                        } catch (Throwable ex) {
+                            log.warn("查询Redis用户优惠券记录为空或抛异常，可能Redis宕机或主从复制数据丢失，基础错误信息：{}", ex.getMessage());
+                            // 如果直接抛异常大概率 Redis 宕机了，所以应该写个延时队列向 Redis 重试放入值。为了避免代码复杂性，这里直接写新增，大家知道最优解决方案即可
                             stringRedisTemplate.opsForZSet().add(userCouponListCacheKey, userCouponItemCacheKey, now.getTime());
                         }
-                    } catch (Throwable ex) {
-                        log.warn("查询Redis用户优惠券记录为空或抛异常，可能Redis宕机或主从复制数据丢失，基础错误信息：{}", ex.getMessage());
-                        // 如果直接抛异常大概率 Redis 宕机了，所以应该写个延时队列向 Redis 重试放入值。为了避免代码复杂性，这里直接写新增，大家知道最优解决方案即可
-                        stringRedisTemplate.opsForZSet().add(userCouponListCacheKey, userCouponItemCacheKey, now.getTime());
-                    }
 
-                    // 发送延时消息队列，等待优惠券到期后，将优惠券信息从缓存中删除
-                    UserCouponDelayCloseEvent userCouponDelayCloseEvent = UserCouponDelayCloseEvent.builder()
-                            .couponTemplateId(requestParam.getCouponTemplateId())
-                            .userCouponId(String.valueOf(userCouponDO.getId()))
-                            .userId(UserContext.getUserId())
-                            .delayTime(validEndTime.getTime())
-                            .build();
-                    SendResult sendResult = couponDelayCloseProducer.sendMessage(userCouponDelayCloseEvent);
-
-                    // 发送消息失败解决方案简单且高效的逻辑之一：打印日志并报警，通过日志搜集并重新投递
-                    if (ObjectUtil.notEqual(sendResult.getSendStatus().name(), "SEND_OK")) {
-                        log.warn("发送优惠券关闭延时队列失败，消息参数：{}", JSON.toJSONString(userCouponDelayCloseEvent));
+                        // 发送延时消息队列，等待优惠券到期后，将优惠券信息从缓存中删除
+                        UserCouponDelayCloseEvent userCouponDelayCloseEvent = UserCouponDelayCloseEvent.builder()
+                                .couponTemplateId(requestParam.getCouponTemplateId())
+                                .userCouponId(String.valueOf(userCouponDO.getId()))
+                                .userId(UserContext.getUserId())
+                                .delayTime(validEndTime.getTime())
+                                .build();
+                        
+                        // 使用带重试机制和死信队列支持的消息发送方法
+                        boolean sendSuccess = couponDelayCloseProducer.sendWithRetry(userCouponDelayCloseEvent);
+                        
+                        // 发送成功记录信息
+                        if (sendSuccess) {
+                            log.info("[优惠券关闭] 延时消息发送成功，用户优惠券ID：{}", userCouponDO.getId());
+                        } else {
+                            // 发送失败但已进入重试机制或死信队列，记录警告日志
+                            // 注意：这里不再抛出异常，因为数据库操作已经成功，消息发送失败通过重试机制和死信队列保障
+                            log.warn("[优惠券关闭] 延时消息发送失败，已进入重试机制或死信队列，用户优惠券ID：{}", 
+                                    userCouponDO.getId());
+                            
+                            // 可以在这里添加监控告警，通知运维人员关注
+                            // sendAlertNotification(userCouponDelayCloseEvent);
+                        }
                     }
+                } catch (Exception ex) {
+                    status.setRollbackOnly();
+                    // 优惠券已被领取完业务异常
+                    if (ex instanceof ServiceException) {
+                        throw (ServiceException) ex;
+                    }
+                    if (ex instanceof DuplicateKeyException) {
+                        log.error("用户重复领取优惠券，用户ID：{}，优惠券模板ID：{}", UserContext.getUserId(), requestParam.getCouponTemplateId());
+                        throw new ServiceException("用户重复领取优惠券");
+                    }
+                    throw new ServiceException("优惠券领取异常，请稍候再试");
                 }
-            } catch (Exception ex) {
-                status.setRollbackOnly();
-                // 优惠券已被领取完业务异常
-                if (ex instanceof ServiceException) {
-                    throw (ServiceException) ex;
-                }
-                if (ex instanceof DuplicateKeyException) {
-                    log.error("用户重复领取优惠券，用户ID：{}，优惠券模板ID：{}", UserContext.getUserId(), requestParam.getCouponTemplateId());
-                    throw new ServiceException("用户重复领取优惠券");
-                }
-                throw new ServiceException("优惠券领取异常，请稍候再试");
-            }
-        });
+            });
+            
+            // 更新监控指标
+            syncSuccessCounter.incrementAndGet();
+            log.info("[同步优惠券兑换] 处理成功，用户ID：{}，优惠券模板ID：{}", 
+                    UserContext.getUserId(), requestParam.getCouponTemplateId());
+        } catch (Exception e) {
+            syncFailCounter.incrementAndGet();
+            log.error("[同步优惠券兑换] 处理异常，用户ID：{}，优惠券模板ID：{}", 
+                    UserContext.getUserId(), requestParam.getCouponTemplateId(), e);
+            throw e;
+        } finally {
+            // 记录响应时间
+            long endTime = System.currentTimeMillis();
+            long responseTime = endTime - startTime;
+            recordResponseTime(syncResponseTimes, responseTime);
+        }
     }
+
+    // 计数器指标 - 用于监控
+    private static final AtomicInteger syncSuccessCounter = new AtomicInteger(0);
+    private static final AtomicInteger syncFailCounter = new AtomicInteger(0);
+    private static final AtomicInteger asyncSuccessCounter = new AtomicInteger(0);
+    private static final AtomicInteger asyncFailCounter = new AtomicInteger(0);
+    private static final ConcurrentLinkedQueue<Long> syncResponseTimes = new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<Long> asyncResponseTimes = new ConcurrentLinkedQueue<>();
+    private static final int MAX_RESPONSE_TIME_SAMPLES = 100;
 
     @Override
     public void redeemUserCouponByMQ(CouponTemplateRedeemReqDTO requestParam) {
-        // 验证缓存是否存在，保障数据存在并且缓存中存在
-        CouponTemplateQueryRespDTO couponTemplate = couponTemplateService.findCouponTemplate(BeanUtil.toBean(requestParam, CouponTemplateQueryReqDTO.class));
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            // 验证缓存是否存在，保障数据存在并且缓存中存在
+            CouponTemplateQueryRespDTO couponTemplate = couponTemplateService.findCouponTemplate(BeanUtil.toBean(requestParam, CouponTemplateQueryReqDTO.class));
 
-        // 验证领取的优惠券是否在活动有效时间
-        boolean isInTime = DateUtil.isIn(new Date(), couponTemplate.getValidStartTime(), couponTemplate.getValidEndTime());
-        if (!isInTime) {
-            // 一般来说优惠券领取时间不到的时候，前端不会放开调用请求，可以理解这是用户调用接口在“攻击”
-            throw new ClientException("不满足优惠券领取时间");
+            // 验证领取的优惠券是否在活动有效时间
+            boolean isInTime = DateUtil.isIn(new Date(), couponTemplate.getValidStartTime(), couponTemplate.getValidEndTime());
+            if (!isInTime) {
+                // 一般来说优惠券领取时间不到的时候，前端不会放开调用请求，可以理解这是用户调用接口在“攻击”
+                throw new ClientException("不满足优惠券领取时间");
+            }
+
+            // 获取 LUA 脚本，并保存到 Hutool 的单例管理容器，下次直接获取不需要加载
+            DefaultRedisScript<Long> buildLuaScript = Singleton.get(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH, () -> {
+                DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+                redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH)));
+                redisScript.setResultType(Long.class);
+                return redisScript;
+            });
+
+            // 验证用户是否符合优惠券领取条件
+            JSONObject receiveRule = JSON.parseObject(couponTemplate.getReceiveRule());
+            String limitPerPerson = receiveRule.getString("limitPerPerson");
+
+            // 执行 LUA 脚本进行扣减库存以及增加 Redis 用户领券记录次数
+            String couponTemplateCacheKey = String.format(EngineRedisConstant.COUPON_TEMPLATE_KEY, requestParam.getCouponTemplateId());
+            String userCouponTemplateLimitCacheKey = String.format(EngineRedisConstant.USER_COUPON_TEMPLATE_LIMIT_KEY, UserContext.getUserId(), requestParam.getCouponTemplateId());
+            Long stockDecrementLuaResult = stringRedisTemplate.execute(
+                    buildLuaScript,
+                    ListUtil.of(couponTemplateCacheKey, userCouponTemplateLimitCacheKey),
+                    String.valueOf(couponTemplate.getValidEndTime().getTime()), limitPerPerson
+            );
+
+            // 判断 LUA 脚本执行返回类，如果失败根据类型返回报错提示
+            long firstField = StockDecrementReturnCombinedUtil.extractFirstField(stockDecrementLuaResult);
+            if (RedisStockDecrementErrorEnum.isFail(firstField)) {
+                throw new ServiceException(RedisStockDecrementErrorEnum.fromType(firstField));
+            }
+
+            // 构建幂等性消息ID - 使用请求参数和用户ID构建唯一标识
+            String messageId = StrUtil.builder()
+                    .append("coupon_redeem_")
+                    .append(UserContext.getUserId())
+                    .append("_")
+                    .append(requestParam.getCouponTemplateId())
+                    .append("_")
+                    .append(System.currentTimeMillis())
+                    .toString();
+
+            UserCouponRedeemEvent userCouponRedeemEvent = UserCouponRedeemEvent.builder()
+                    .requestParam(requestParam)
+                    .receiveCount((int) StockDecrementReturnCombinedUtil.extractSecondField(stockDecrementLuaResult))
+                    .couponTemplate(couponTemplate)
+                    .userId(UserContext.getUserId())
+                    .build();
+            
+            // 使用带重试机制和死信队列支持的消息发送方法
+            boolean sendSuccess = userCouponRedeemProducer.sendWithRetry(userCouponRedeemEvent);
+            
+            // 更新监控指标
+            if (sendSuccess) {
+                asyncSuccessCounter.incrementAndGet();
+                log.info("[异步优惠券兑换] 消息发送成功，用户ID：{}，优惠券模板ID：{}", 
+                        UserContext.getUserId(), requestParam.getCouponTemplateId());
+            } else {
+                asyncFailCounter.incrementAndGet();
+                log.warn("[异步优惠券兑换] 消息发送失败，已进入重试机制或死信队列，用户ID：{}，优惠券模板ID：{}", 
+                        UserContext.getUserId(), requestParam.getCouponTemplateId());
+                
+                // 可以在这里添加监控告警，通知运维人员关注
+                // sendAlertNotification(userCouponRedeemEvent);
+            }
+        } catch (Exception e) {
+            asyncFailCounter.incrementAndGet();
+            log.error("[异步优惠券兑换] 处理异常，用户ID：{}，优惠券模板ID：{}", 
+                    UserContext.getUserId(), requestParam.getCouponTemplateId(), e);
+            throw e;
+        } finally {
+            // 记录响应时间
+            long endTime = System.currentTimeMillis();
+            long responseTime = endTime - startTime;
+            recordResponseTime(asyncResponseTimes, responseTime);
         }
-
-        // 获取 LUA 脚本，并保存到 Hutool 的单例管理容器，下次直接获取不需要加载
-        DefaultRedisScript<Long> buildLuaScript = Singleton.get(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH, () -> {
-            DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
-            redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource(STOCK_DECREMENT_AND_SAVE_USER_RECEIVE_LUA_PATH)));
-            redisScript.setResultType(Long.class);
-            return redisScript;
-        });
-
-        // 验证用户是否符合优惠券领取条件
-        JSONObject receiveRule = JSON.parseObject(couponTemplate.getReceiveRule());
-        String limitPerPerson = receiveRule.getString("limitPerPerson");
-
-        // 执行 LUA 脚本进行扣减库存以及增加 Redis 用户领券记录次数
-        String couponTemplateCacheKey = String.format(EngineRedisConstant.COUPON_TEMPLATE_KEY, requestParam.getCouponTemplateId());
-        String userCouponTemplateLimitCacheKey = String.format(EngineRedisConstant.USER_COUPON_TEMPLATE_LIMIT_KEY, UserContext.getUserId(), requestParam.getCouponTemplateId());
-        Long stockDecrementLuaResult = stringRedisTemplate.execute(
-                buildLuaScript,
-                ListUtil.of(couponTemplateCacheKey, userCouponTemplateLimitCacheKey),
-                String.valueOf(couponTemplate.getValidEndTime().getTime()), limitPerPerson
-        );
-
-        // 判断 LUA 脚本执行返回类，如果失败根据类型返回报错提示
-        long firstField = StockDecrementReturnCombinedUtil.extractFirstField(stockDecrementLuaResult);
-        if (RedisStockDecrementErrorEnum.isFail(firstField)) {
-            throw new ServiceException(RedisStockDecrementErrorEnum.fromType(firstField));
+    }
+    
+    /**
+     * 记录响应时间，并维护样本数量
+     */
+    private void recordResponseTime(ConcurrentLinkedQueue<Long> queue, long responseTime) {
+        queue.add(responseTime);
+        if (queue.size() > MAX_RESPONSE_TIME_SAMPLES) {
+            queue.poll();
         }
-
-        UserCouponRedeemEvent userCouponRedeemEvent = UserCouponRedeemEvent.builder()
-                .requestParam(requestParam)
-                .receiveCount((int) StockDecrementReturnCombinedUtil.extractSecondField(stockDecrementLuaResult))
-                .couponTemplate(couponTemplate)
-                .userId(UserContext.getUserId())
-                .build();
-        SendResult sendResult = userCouponRedeemProducer.sendMessage(userCouponRedeemEvent);
-        // 发送消息失败解决方案简单且高效的逻辑之一：打印日志并报警，通过日志搜集并重新投递
-        if (ObjectUtil.notEqual(sendResult.getSendStatus().name(), "SEND_OK")) {
-            log.warn("发送优惠券兑换消息失败，消息参数：{}", JSON.toJSONString(userCouponRedeemEvent));
+    }
+    
+    /**
+     * 根据流量大小动态选择处理模式
+     * 这里使用一个简单的算法：根据最近100次请求的平均响应时间来判断是否切换到异步模式
+     * 如果同步模式响应时间超过阈值，则自动切换到异步模式
+     */
+    private boolean shouldUseAsyncMode() {
+        // 简单实现：如果同步模式平均响应时间超过100ms，则使用异步模式
+        if (syncResponseTimes.isEmpty()) {
+            return false; // 默认使用同步模式
         }
+        
+        long totalTime = 0;
+        for (Long time : syncResponseTimes) {
+            totalTime += time;
+        }
+        long avgTime = totalTime / syncResponseTimes.size();
+        
+        return avgTime > 100; // 阈值可配置
+    }
+    
+    // 获取监控指标的方法（供外部系统调用）
+    public Map<String, Object> getMetrics() {
+        Map<String, Object> metrics = new HashMap<>();
+        metrics.put("syncSuccessCount", syncSuccessCounter.get());
+        metrics.put("syncFailCount", syncFailCounter.get());
+        metrics.put("asyncSuccessCount", asyncSuccessCounter.get());
+        metrics.put("asyncFailCount", asyncFailCounter.get());
+        
+        // 计算平均响应时间
+        if (!syncResponseTimes.isEmpty()) {
+            long totalTime = 0;
+            for (Long time : syncResponseTimes) {
+                totalTime += time;
+            }
+            metrics.put("syncAvgResponseTime", totalTime / syncResponseTimes.size());
+        }
+        
+        if (!asyncResponseTimes.isEmpty()) {
+            long totalTime = 0;
+            for (Long time : asyncResponseTimes) {
+                totalTime += time;
+            }
+            metrics.put("asyncAvgResponseTime", totalTime / asyncResponseTimes.size());
+        }
+        
+        return metrics;
     }
 
     @Override

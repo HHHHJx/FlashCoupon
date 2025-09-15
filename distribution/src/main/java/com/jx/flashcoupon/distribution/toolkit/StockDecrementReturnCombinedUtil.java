@@ -5,10 +5,8 @@ package com.jx.flashcoupon.distribution.toolkit;
 /**
  * 用户优惠券执行 LUA 脚本返回数据｜通过位移形式提高性能，是个小优化
  * 因为预计每 5000 条记录保存次数据库，2^12 能表示 4096，所以这里采用了 2^13
- * <p>
- * 作者：马丁
- * 加项目群：早加入就是优势！500人内部沟通群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-15
+
+ * 开发时间：2025-07-15
  */
 public class StockDecrementReturnCombinedUtil {
 

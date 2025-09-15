@@ -3,12 +3,12 @@
 package com.jx.flashcoupon.engine.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.nageoffer.onecoupon.engine.dao.entity.CouponTemplateRemindDO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRemindCancelReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRemindCreateReqDTO;
-import com.nageoffer.onecoupon.engine.dto.req.CouponTemplateRemindQueryReqDTO;
-import com.nageoffer.onecoupon.engine.dto.resp.CouponTemplateRemindQueryRespDTO;
-import com.nageoffer.onecoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
+import com.jx.flashcoupon.engine.dao.entity.CouponTemplateRemindDO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRemindCancelReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRemindCreateReqDTO;
+import com.jx.flashcoupon.engine.dto.req.CouponTemplateRemindQueryReqDTO;
+import com.jx.flashcoupon.engine.dto.resp.CouponTemplateRemindQueryRespDTO;
+import com.jx.flashcoupon.engine.service.handler.remind.dto.CouponTemplateRemindDTO;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * <p>
  * 作者：优雅
  * 加项目群：早加入就是优势！500人内部项目群，分享的知识总有你需要的 <a href="https://t.zsxq.com/cw7b9" />
- * 开发时间：2024-07-16
+ * 开发时间：2025-07-16
  */
 public interface CouponTemplateRemindService extends IService<CouponTemplateRemindDO> {
 
