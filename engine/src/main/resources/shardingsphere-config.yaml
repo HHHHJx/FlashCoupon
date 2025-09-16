@@ -40,30 +40,52 @@ rules:
           standard:
             shardingColumn: user_id
             shardingAlgorithmName: user_coupon_table_mod
+      t_coupon_settlement:
+        actualDataNodes: ds_${0..1}.t_coupon_settlement_${0..15}
+        databaseStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: user_coupon_settlement_database_mod
+        tableStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: user_coupon_settlement_table_mod
     shardingAlgorithms: # 分片算法定义集合
       coupon_template_database_mod: # 优惠券分库算法定义
         type: CLASS_BASED # 根据自定义库分片算法类进行分片
         props: # 分片相关属性
           # 自定义库分片算法Class
-          algorithmClassName: com.jx.flashcoupon.distribution.dao.sharding.DBHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.engine.dao.sharding.DBHashModShardingAlgorithm
           sharding-count: 16 # 分片总数量
           strategy: standard # 分片类型，单字段分片
+          business-tag: coupon-template # 自定义业务标签
       coupon_template_table_mod: # 优惠券分表算法定义
-        type: CLASS_BASED # 根据自定义库分片算法类进行分片
+        type: CLASS_BASED # 根据自定义表分片算法类进行分片
         props: # 分片相关属性
           # 自定义表分片算法Class
-          algorithmClassName: com.jx.flashcoupon.distribution.dao.sharding.TableHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.engine.dao.sharding.TableHashModShardingAlgorithm
           strategy: standard # 分片类型，单字段分片
       user_coupon_database_mod:
         type: CLASS_BASED
         props:
-          algorithmClassName: com.jx.flashcoupon.distribution.dao.sharding.DBHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.engine.dao.sharding.DBHashModShardingAlgorithm
           sharding-count: 32
           strategy: standard
       user_coupon_table_mod:
         type: CLASS_BASED
         props:
-          algorithmClassName: com.jx.flashcoupon.distribution.dao.sharding.TableHashModShardingAlgorithm
+          algorithmClassName: com.jx.flashcoupon.engine.dao.sharding.TableHashModShardingAlgorithm    
+          strategy: standard
+      user_coupon_settlement_database_mod:
+        type: CLASS_BASED
+        props:
+          algorithmClassName: com.jx.flashcoupon.engine.dao.sharding.DBHashModShardingAlgorithm
+          sharding-count: 16
+          strategy: standard
+      user_coupon_settlement_table_mod:
+        type: CLASS_BASED
+        props:
+          algorithmClassName: com.jx.flashcoupon.engine.dao.sharding.TableHashModShardingAlgorithm
           strategy: standard
 
 props:

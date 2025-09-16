@@ -1,11 +1,12 @@
-
-
 server:
-  port: 10050
+  port: 10020
 
 spring:
   application:
-    name: flashCoupon-search
+    name: engine${unique-name:}
+  datasource:
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:shardingsphere-config.yaml
   cloud:
     nacos:
       discovery:
@@ -18,9 +19,10 @@ spring:
       host: 127.0.0.1
       port: 6379
       password: 123456
-  # 为了极速安装(随时铲), 因此ES不设置密码
-  elasticsearch:
-    uris: 127.0.0.1:9200
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 springdoc:
   default-flat-param-object: true
@@ -33,7 +35,7 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
-      packages-to-scan: com.jx.flashcoupon
+      packages-to-scan: com.jx.flashcoupon.engine
 
 knife4j:
   enable: true
@@ -43,7 +45,12 @@ knife4j:
 rocketmq:
   name-server: 127.0.0.1:9876
   producer:
-    group: flashCoupon_search${unique-name:}-service_common-message-execute_pg
+    group: flashCoupon_engine${unique-name:}-service_common-message-execute_pg
     send-message-timeout: 2000
     retry-times-when-send-failed: 1
     retry-times-when-send-async-failed: 1
+
+flash-coupon:
+  user-coupon-list:
+    save-cache:
+      type: direct # 有两个选项：direct 在流程里直接操作，binlog 通过解析数据库日志后操作
